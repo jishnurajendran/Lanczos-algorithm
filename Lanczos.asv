@@ -1,0 +1,32 @@
+function [T] = Lanczos(A,n);
+%Lancozs Algorithm to find Eigenvalue spectra
+%Inputs :A hermitian matrix of the order n
+%       :n order of the matrix
+
+    T = zeros(n);
+    
+    v = rand(n,1);     %Random vector 
+    v1 = v/norm(v);    %
+
+    t = A*v1;
+    alpha = v1'*t;
+    t = t - v1*alpha;
+
+    T(1,1) = alpha;
+
+    for j = 2:n,
+
+        beta = norm(t); 
+        v0 = v1; v1 = t/beta;
+        
+        t = A*v1 - v0*beta;
+        alpha = v1'*t;
+        t = t - v1*alpha;
+
+        T(j,j-1) = beta; T(j-1,j) = beta; T(j,j) = alpha;
+       
+
+    end 
+    T
+    eig(T)
+end
